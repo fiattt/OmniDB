@@ -915,64 +915,64 @@ def thread_query(self,args,ws_object):
             v_duration = GetDuration(log_start_time,log_end_time)
 
             if v_cmd_type=='export_csv' or v_cmd_type=='export_xlsx':
+                print("")
+            #     #cleaning temp folder
+            #     clean_temp_folder()
 
-                #cleaning temp folder
-                clean_temp_folder()
+            #     if v_cmd_type=='export_csv':
+            #         v_extension = 'csv'
+            #     else:
+            #         v_extension = 'xlsx'
 
-                if v_cmd_type=='export_csv':
-                    v_extension = 'csv'
-                else:
-                    v_extension = 'xlsx'
+            #     v_export_dir = settings.TEMP_DIR
+            #     if not os.path.exists(v_export_dir):
+            #         os.makedirs(v_export_dir)
 
-                v_export_dir = settings.TEMP_DIR
-                if not os.path.exists(v_export_dir):
-                    os.makedirs(v_export_dir)
+            #     v_database.v_connection.Open()
+            #     v_file_name = '{0}.{1}'.format(str(time.time()).replace('.','_'),v_extension)
+            #     v_data1 = v_database.v_connection.QueryBlock(v_sql, 1000, False, True)
+            #     #if platform.system() == 'Windows':
+            #     #    f = Spartacus.Utils.DataFileWriter(os.path.join(v_export_dir, v_file_name), v_data1.Columns, 'windows-1252')
+            #     #else:
+            #     #    f = Spartacus.Utils.DataFileWriter(os.path.join(v_export_dir, v_file_name), v_data1.Columns)
+            #     f = Spartacus.Utils.DataFileWriter(os.path.join(v_export_dir, v_file_name), v_data1.Columns,v_session.v_csv_encoding, v_session.v_csv_delimiter)
+            #     f.Open()
+            #     if v_database.v_connection.v_start:
+            #         f.Write(v_data1)
+            #         v_hasmorerecords = False
+            #     elif len(v_data1.Rows) > 0:
+            #         f.Write(v_data1)
+            #         v_hasmorerecords = True
+            #     else:
+            #         v_hasmorerecords = False
+            #     while v_hasmorerecords:
+            #         v_data1 = v_database.v_connection.QueryBlock(v_sql, 1000, False, True)
+            #         if v_database.v_connection.v_start:
+            #             f.Write(v_data1)
+            #             v_hasmorerecords = False
+            #         elif len(v_data1.Rows) > 0:
+            #             f.Write(v_data1)
+            #             v_hasmorerecords = True
+            #         else:
+            #             v_hasmorerecords = False
 
-                v_database.v_connection.Open()
-                v_file_name = '{0}.{1}'.format(str(time.time()).replace('.','_'),v_extension)
-                v_data1 = v_database.v_connection.QueryBlock(v_sql, 1000, False, True)
-                #if platform.system() == 'Windows':
-                #    f = Spartacus.Utils.DataFileWriter(os.path.join(v_export_dir, v_file_name), v_data1.Columns, 'windows-1252')
-                #else:
-                #    f = Spartacus.Utils.DataFileWriter(os.path.join(v_export_dir, v_file_name), v_data1.Columns)
-                f = Spartacus.Utils.DataFileWriter(os.path.join(v_export_dir, v_file_name), v_data1.Columns,v_session.v_csv_encoding, v_session.v_csv_delimiter)
-                f.Open()
-                if v_database.v_connection.v_start:
-                    f.Write(v_data1)
-                    v_hasmorerecords = False
-                elif len(v_data1.Rows) > 0:
-                    f.Write(v_data1)
-                    v_hasmorerecords = True
-                else:
-                    v_hasmorerecords = False
-                while v_hasmorerecords:
-                    v_data1 = v_database.v_connection.QueryBlock(v_sql, 1000, False, True)
-                    if v_database.v_connection.v_start:
-                        f.Write(v_data1)
-                        v_hasmorerecords = False
-                    elif len(v_data1.Rows) > 0:
-                        f.Write(v_data1)
-                        v_hasmorerecords = True
-                    else:
-                        v_hasmorerecords = False
+            #     v_database.v_connection.Close()
+            #     f.Flush()
 
-                v_database.v_connection.Close()
-                f.Flush()
+            #     log_end_time = datetime.now()
+            #     v_duration = GetDuration(log_start_time,log_end_time)
 
-                log_end_time = datetime.now()
-                v_duration = GetDuration(log_start_time,log_end_time)
+            #     v_response['v_data'] = {
+            #         'v_filename': settings.PATH + '/static/temp/{0}'.format(v_file_name),
+            #         'v_downloadname': 'omnidb_exported.{0}'.format(v_extension),
+            #         'v_duration': v_duration,
+            #         'v_inserted_id': v_inserted_id,
+            #         'v_con_status': v_database.v_connection.GetConStatus(),
+            #         'v_chunks': False
+            #     }
 
-                v_response['v_data'] = {
-                    'v_filename': settings.PATH + '/static/temp/{0}'.format(v_file_name),
-                    'v_downloadname': 'omnidb_exported.{0}'.format(v_extension),
-                    'v_duration': v_duration,
-                    'v_inserted_id': v_inserted_id,
-                    'v_con_status': v_database.v_connection.GetConStatus(),
-                    'v_chunks': False
-                }
-
-                if not self.cancel:
-                    ws_object.event_loop.add_callback(send_response_thread_safe,ws_object,json.dumps(v_response))
+            #     if not self.cancel:
+            #         ws_object.event_loop.add_callback(send_response_thread_safe,ws_object,json.dumps(v_response))
 
             else:
                 if v_mode==0:
